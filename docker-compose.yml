@@ -1,0 +1,63 @@
+version: "3.9"
+
+volumes:
+  mariadb-data: {}
+
+services:
+  database:
+    build: ./docker-maria
+    image: mariadb-server:v1.0
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    ports:
+      - '3306:3306'
+    # environment: 
+    # env_file: # all env variables are inside proper dockerfile
+
+  server:
+    build: ./docker-flask
+    image: flask-server:v1.0
+    ports:
+      - '5555:5555' # change 2nd one to change backend listening port
+    depends_on:
+      - "database"
+    # environment:
+    # env_file: # all env variables are inside proper dockerfile
+
+  frontend:
+    build: ./docker-react
+    image: react-app:v1.0
+    ports:
+      - '8081:8081' # change 2nd one to change frontend listening port
+    depends_on:
+      - "server"
+    # environment:
+    # env_file: # all env variables are inside proper dockerfile
+
+
+#------HOW TO RUN------
+#
+# Increase RAM allocation for docker (e.g. using Docker Desktop) to at least 4GB
+# 
+# docker compose up -d --build
+# 
+#------------
+
+#------HOW TO ACCESS------
+# 
+# database defaults:
+#   host: localhost
+#   schema: sara
+#   user: rescuer
+#   pass: ---FIXME---
+# 
+# backend defaults:
+#   host: http://localhost:5555/
+#   user: ---FIXME--- pass: ---FIXME---
+#   user: ---FIXME--- pass: ---FIXME---
+#   (recomended use of prepared postman collection)
+#
+# frontend defaults:
+#   host: http://localhost:8081/
+#   user: ---FIXME--- pass: ---FIXME---
+#
