@@ -50,3 +50,9 @@ Now you are just one command away from running **database + backend + frontend**
 
         $ docker system prune -a
         $ docker volume rm $(docker volume ls -q)
+
+---
+
+## How to make it work?
+
+Fix all `---FIXME---` placeholders in the source code.
